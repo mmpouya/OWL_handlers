@@ -1,5 +1,7 @@
 import re
+import os
 from typing import Dict
+from dotenv import loaddotenv
 from SPARQLWrapper import SPARQLWrapper , RDF , JSON
 import json
 # from rdflib.plugins.sparql import JSON
@@ -89,7 +91,8 @@ def json_query_endpoint(query):
     Returns:
         dict: The query results in JSON format, or None if an error occurs.
     """
-    endpoint_url = "https://triple.tavasi.ir/sparql/"
+    loaddotenv()
+    endpoint_url = os.getenv("SPARQL_ENDPOINT")
     sparql = SPARQLWrapper(endpoint_url)
     sparql.setQuery(query)
     sparql.setReturnFormat(JSON)
@@ -100,7 +103,7 @@ def json_query_endpoint(query):
         print(f"An error occurred: {e}")
         return None
 
-def ttl_query_endpoint(query):
+def ttl_query_endpoint(query,endpoint_url):
     """
     Executes a SPARQL query against a specified Virtuoso endpoint.
     Args:
@@ -109,7 +112,8 @@ def ttl_query_endpoint(query):
     Returns:
         str: The ttl results in str format, or None if an error occurs.
     """
-    endpoint_url = "https://triple.tavasi.ir/sparql/"
+    loaddotenv()
+    endpoint_url = os.getenv("SPARQL_ENDPOINT")
     sparql = SPARQLWrapper(endpoint_url)
     
     sparql.setQuery(query)
